@@ -16,7 +16,7 @@ class App extends Component {
     }
   }
   requestNewBrief() {
-    fetch('http://localhost:3000/',{
+    fetch('https://obscure-ravine-37780.herokuapp.com/',{
       method: 'GET'
     })
       .then(checkStatus)

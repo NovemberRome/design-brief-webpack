@@ -1,0 +1,15 @@
+.button {
+  border-radius: 5px;
+  border: 1px solid #000;
+  background: #FFF;
+  font-size: 1.15rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  &:hover {
+    background: #000;
+    color: #FFF;
+  }
+  &:active {
+    transform: translate(1px, 2px);
+  }
+}

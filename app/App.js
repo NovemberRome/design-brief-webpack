@@ -4,11 +4,10 @@ import Button from './components/Button';
 import BriefModel from './models/Brief';
 import Brief from './components/Brief';
 import styles from './App.scss';
-import checkStatus from './utilities/checkStatus';
-import {updateBriefAction} from './ducks/Brief';
+import { requestBriefAction } from './ducks/Brief';
 
 const Loading = ({}) => <div>
-  <h1>Loading...</h1>
+  <h1>Loading…</h1>
 </div>
 
 // Map Redux's state to props for App:
@@ -18,7 +17,7 @@ const mapStateToProps = (state, ownProps) => {
 // Map Redux's dispatch to actions to props for App:
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    updateBrief: brief => dispatch(updateBriefAction(brief))
+    requestBrief: brief => dispatch(requestBriefAction(brief))
   }
 }
 
@@ -27,7 +26,6 @@ class App extends Component {
     super(props);
     // Create state as an empty object:
     this.state = {};
-    this.requestNewBrief();
   }
   // Determine loading based on whether or not we have received a brief yet:
   static getDerivedStateFromProps(props, state) {
@@ -35,28 +33,14 @@ class App extends Component {
       loading: Object.keys(props.brief).length === 0
     }
   }
-  requestNewBrief() {
-    fetch('https://obscure-ravine-37780.herokuapp.com/', {
-      method: 'GET'
-    })
-      .then(checkStatus)
-      .then(response => response.json())
-      .then(brief => {
-        // Dispatch the action:
-        this.props.updateBrief({
-          ...brief,
-          businessName: brief.business.name,
-          businessType: brief.business.type
-        })
-      })
-      .catch(err => {
-        console.error(err);
-        // Handle the error here.
-      });
+  // Request a brief after start-up:
+  componentDidMount() {
+    this.props.requestBrief();
   }
+  // Request a brief every time the user clicks a button:
   newBrief = (ev) => {
     ev.preventDefault();
-    this.requestNewBrief();
+    this.props.requestBrief();
   }
   render() {
     return this.state.loading

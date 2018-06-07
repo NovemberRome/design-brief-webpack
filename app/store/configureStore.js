@@ -1,8 +1,9 @@
-import { combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import reducers from '../ducks';
 
 const reducer = combineReducers(reducers);
-const initialState = {};
-const configureStore = () => createStore(reducer, initialState);
+const enhancer = applyMiddleware(thunk);
+const configureStore = () => createStore(reducer, enhancer);
 
 export default configureStore;

@@ -1,1 +1,1 @@
-To get up and running from yesterday's code, run `npm i redux react-redux` to install the new libraries.
+To get up and running from yesterday's code, run `npm i redux-thunk` to install the new libraries.

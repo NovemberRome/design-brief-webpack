@@ -42,25 +42,30 @@ class App extends Component {
   // Request a brief every time the user clicks a button:
   newBrief = (ev) => {
     ev.preventDefault();
-    const filteredDefaults = Object.entries(this.state.defaults)
-      .filter(([key, value]) => value !== '')
-      .reduce((obj, [key,value]) => {
+    // Make a list of defaults, with any empty string values removed:
+    const filteredDefaults = Object.entries(this.state.defaults) // Creates an array of arrays [[key, value], [key, value]]
+      .filter(([key, value]) => value !== '') // Removes elements that have an empty string as value
+      .reduce((obj, [key,value]) => { // Reconstitutes an object from that array of arrays
         obj[key] = value;
         return obj;
       }, {})
-    this.props.requestBrief(filteredDefaults);
+    this.props.requestBrief(filteredDefaults); // Pass the filtered default list to the action
   }
+  // This function takes a particular prop and returns a function that updates
+  // state.default[prop] when the user provides new input:
   changeProp = prop => ev => {
-    console.log(prop, ev.target.value)
     this.setState({
       defaults: {
         ...this.state.defaults,
+        // If prop is adjectives, split into an array at each comma:
         [prop]: prop === 'adjectives' ? ev.target.value.split(/\s*\,\s*/) : ev.target.value
       }
     })
   }
   render() {
     const actions = {};
+    // This processes the brief object and generates functions.
+    // There's probably a way to cache this, but I'm working quickly:
     Object.keys(this.props.brief).forEach(key => {
       if(key === 'business') { return; }
       actions[key] = this.changeProp(key);

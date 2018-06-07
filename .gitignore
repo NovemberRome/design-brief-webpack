@@ -2,6 +2,7 @@ build/
 node_modules/
 bower_components/
 dist/javascripts/
+.stylelintcache/
 npm-debug.log
 yarn.lock
 .nyc_output

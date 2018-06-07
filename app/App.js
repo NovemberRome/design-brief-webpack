@@ -77,7 +77,7 @@ class App extends Component {
         <p className={styles.centered}>
           <Button onClick={this.newBrief}>Get a New Brief</Button>
         </p>
-        <Defaults actions={actions}/>
+        <Defaults defaults={this.state.defaults} actions={actions}/>
       </div>);
   }
 }

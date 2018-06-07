@@ -48,7 +48,8 @@ class App extends Component {
       .reduce((obj, [key,value]) => { // Reconstitutes an object from that array of arrays
         obj[key] = value;
         return obj;
-      }, {})
+      }, {});
+    filteredDefaults['adjectives'] = filteredDefaults['adjectives'].split(/\s*\,\s*/g);
     this.props.requestBrief(filteredDefaults); // Pass the filtered default list to the action
   }
   // This function takes a particular prop and returns a function that updates
@@ -58,7 +59,7 @@ class App extends Component {
       defaults: {
         ...this.state.defaults,
         // If prop is adjectives, split into an array at each comma:
-        [prop]: prop === 'adjectives' ? ev.target.value.split(/\s*\,\s*/) : ev.target.value
+        [prop]: ev.target.value//prop === 'adjectives' ? ev.target.value.split(/\s*\,\s*/) : ev.target.value
       }
     })
   }

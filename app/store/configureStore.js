@@ -2,7 +2,6 @@ import { combineReducers, createStore } from 'redux';
 import reducers from '../ducks';
 
 const reducer = combineReducers(reducers);
-const initialState = {};
-const configureStore = () => createStore(reducer, initialState);
+const configureStore = () => createStore(reducer);
 
 export default configureStore;

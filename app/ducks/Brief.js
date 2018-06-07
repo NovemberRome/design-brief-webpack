@@ -8,14 +8,14 @@ const initialState = {};
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_BRIEF:
-      return action.payload.brief;
+      return Object.assign({}, action.payload.brief, action.payload.defaults);
     default:
       return state;
   }
 }
 
 // Action Creators:
-export const requestBriefAction = () => (dispatch, getState) => 
+export const requestBriefAction = defaults => (dispatch, getState) => 
   request('https://obscure-ravine-37780.herokuapp.com/')
     .then(brief => {
       // Dispatch the action:
@@ -23,12 +23,13 @@ export const requestBriefAction = () => (dispatch, getState) =>
         ...brief,
         businessName: brief.business.name,
         businessType: brief.business.type
-      }))
+      }, defaults))
     });
-export const updateBriefAction = brief => ({
+export const updateBriefAction = (brief, defaults) => ({
   type: UPDATE_BRIEF,
   payload: {
-    brief
+    brief,
+    defaults
   }
 });
 

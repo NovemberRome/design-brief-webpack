@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Button from './components/Button';
-import BriefModel from './models/Brief';
 import Brief from './components/Brief';
+import Defaults from './components/Defaults';
 import styles from './App.scss';
 import { requestBriefAction } from './ducks/Brief';
 
@@ -25,7 +25,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     // Create state as an empty object:
-    this.state = {};
+    this.state = {
+      defaults: {}
+    };
   }
   // Determine loading based on whether or not we have received a brief yet:
   static getDerivedStateFromProps(props, state) {
@@ -40,9 +42,29 @@ class App extends Component {
   // Request a brief every time the user clicks a button:
   newBrief = (ev) => {
     ev.preventDefault();
-    this.props.requestBrief();
+    const filteredDefaults = Object.entries(this.state.defaults)
+      .filter(([key, value]) => value !== '')
+      .reduce((obj, [key,value]) => {
+        obj[key] = value;
+        return obj;
+      }, {})
+    this.props.requestBrief(filteredDefaults);
+  }
+  changeProp = prop => ev => {
+    console.log(prop, ev.target.value)
+    this.setState({
+      defaults: {
+        ...this.state.defaults,
+        [prop]: prop === 'adjectives' ? ev.target.value.split(/\s*\,\s*/) : ev.target.value
+      }
+    })
   }
   render() {
+    const actions = {};
+    Object.keys(this.props.brief).forEach(key => {
+      if(key === 'business') { return; }
+      actions[key] = this.changeProp(key);
+    })
     return this.state.loading
       ? <Loading/>
       : (<div className={styles.container}>
@@ -50,6 +72,7 @@ class App extends Component {
         <p className={styles.centered}>
           <Button onClick={this.newBrief}>Get a New Brief</Button>
         </p>
+        <Defaults actions={actions}/>
       </div>);
   }
 }
